@@ -7,6 +7,7 @@
 
 namespace Delfi
 {
+    // FIXME No fixed dimension matrices
     template <size_t N, size_t M>
     class Matrix
     {
