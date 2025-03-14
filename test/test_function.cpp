@@ -2,9 +2,10 @@
 #include "delfi/constants.h"
 
 #include <iostream>
+#include <cmath>
 int main()
 {
     Delfi::Function a([](Delfi::Variable x) -> Delfi::Variable
-                      { return x * x; });
-    std::cout << a.Derivative(2.5) << std::endl;
+                      { return exp(x); });
+    std::cout << a.Integral(0, 1) << std::endl;
 }

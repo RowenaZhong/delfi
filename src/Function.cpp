@@ -32,11 +32,18 @@ namespace Delfi
     }
     Variable Function::_part_integral(const Variable l, const Variable r) const
     {
-        // TODO: write it
-        // return (this->_func(l) + this->_func(r)) / 2;
+        auto calc_approximate_integral = [this](const Variable l, const Variable r) -> Variable
+        {
+            return (this->_func(l) + 4 * this->_func((l + r) / 2) + this->_func(r)) * (r - l) / 6;
+        };
+        auto mid = (l + r) / 2;
+        auto ans = calc_approximate_integral(l, r);
+        if (abs(ans - calc_approximate_integral(l, mid) - calc_approximate_integral(mid, r)) > eps)
+            return this->_part_integral(l, mid) + this->_part_integral(mid, r);
+        return ans;
     }
     Variable Function::Integral(const Variable l, const Variable r) const
     {
-        // TODO
+        return this->_part_integral(l, r);
     }
 }
