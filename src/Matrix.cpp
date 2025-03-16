@@ -125,66 +125,133 @@ namespace delfi
         return temp;
     }
 
-    Matrix Matrix::transpose()
+    Matrix Matrix::transpose() const
     {
-        Matrix temp(*this);
-        this->resize(this->_cols, this->_rows);
+        Matrix temp(this->_cols, this->_rows);
         for (size_t i = 0; i < this->_rows; i++)
             for (size_t j = 0; j < this->_cols; j++)
-                this->_data[i][j] = temp(j, i);
-
-        return *this;
+                temp(j, i) = this->_data[i][j];
+        return temp;
     }
-    Matrix Matrix::inverse()
+    Matrix Matrix::inverse() const
     {
         if (this->_rows != this->_cols)
             throw std::invalid_argument("Matrix is not square");
-        // Check Determinant
+        if (this->determinant() == 0)
+            throw std::invalid_argument("Matrix is not invertible");
         Matrix temp(this->_rows, this->_rows * 2);
         for (size_t i = 0; i < this->_rows; i++)
             for (size_t j = 0; j < this->_rows; j++)
                 temp(i, j) = this->_data[i][j];
         for (size_t i = 0; i < this->_rows; i++)
             temp(i, i + this->_rows) = 1;
-        temp.gassJordanElimination();
+        temp = temp.gassJordanElimination();
+        Matrix ret(this->_rows, this->_cols);
+
         for (size_t i = 0; i < this->_rows; i++)
             for (size_t j = 0; j < this->_rows; j++)
-                this->_data[i][j] = temp(i, j + this->_rows);
-        return Matrix(*this);
+                ret(i, j) = temp(i, j + this->_rows);
+        return Matrix(ret);
     }
-    Matrix Matrix::gassJordanElimination()
+    Matrix Matrix::gassJordanElimination() const
     {
         if (this->_rows > this->_cols)
             throw std::invalid_argument("Gass Jordan elimination is only possible for square matrices or matrices with more rows than columns");
+        Matrix temp(*this);
         size_t r = 0, c = 0;
-        while (r < this->_rows && c < this->_cols)
+        while (r < temp._rows && c < temp._cols)
         {
-            int t = r;
-            for (int i = r; i < this->_rows; i++)
-                if (abs(this->_data[i][c]) > abs(this->_data[t][c]))
+            auto t = r;
+            for (auto i = r + 1; i < temp._rows; i++)
+                if (std::abs(temp(i, c)) > std::abs(temp(t, c)))
                     t = i;
-            if (this->_data[t][c] == 0)
+            if (std::abs(temp(t, c)) < delfi::eps)
             {
                 c++;
                 continue;
             }
             if (t != r)
-                std::swap(this->_data[r], this->_data[t]);
-            for (int i = 0; i < this->_cols; i++)
-                if (i != c)
-                    this->_data[r][i] /= this->_data[r][c];
-            this->_data[r][c] = 1;
-            for (int i = 0; i < this->_rows; i++)
-                if (i != r)
-                {
-                    for (int j = 0; j < this->_cols; j++)
-                        if (j != c)
-                            this->_data[i][j] -= this->_data[i][c] * this->_data[r][j];
-                    this->_data[i][c] = 0;
-                }
+                temp.SwapRow(r, t);
+            temp.MultiplyRow(r, 1 / temp(r, c));
+            for (auto i = 0; i < temp._rows; i++)
+                if (i != r && std::abs(temp(i, c)) > delfi::eps)
+                    temp.AddRow(i, r, -temp(i, c));
             r++, c++;
         }
-        return *this;
+        return temp;
+    }
+    Variable Matrix::determinant() const
+    {
+        if (this->_rows != this->_cols)
+            throw std::invalid_argument("Matrix is not square");
+        Matrix temp(*this);
+        size_t r = 0, c = 0;
+        Variable ans = 1;
+        while (r < temp._rows && c < temp._cols)
+        {
+            auto t = r;
+            for (auto i = r + 1; i < temp._rows; i++)
+                if (std::abs(temp(i, c)) > std::abs(temp(t, c)))
+                    t = i;
+            if (std::abs(temp(t, c)) < delfi::eps)
+                return 0;
+            if (t != r)
+                temp.SwapRow(r, t), ans *= -1;
+            ans *= temp(r, c);
+            temp.MultiplyRow(r, 1 / temp(r, c));
+            for (auto i = 0; i < temp._rows; i++)
+                if (i != r && std::abs(temp(i, c)) > delfi::eps)
+                    temp.AddRow(i, r, -temp(i, c));
+            r++, c++;
+        }
+        return ans;
+    }
+    Variable Matrix::det() const
+    {
+        return this->determinant();
+    }
+    void Matrix::SwapRow(size_t i, size_t j)
+    {
+        if (i >= this->_rows || j >= this->_rows)
+            throw std::invalid_argument("Invalid row index");
+        std::swap(this->_data[i], this->_data[j]);
+    }
+    void Matrix::SwapColumn(size_t i, size_t j)
+    {
+        if (i >= this->_cols || j >= this->_cols)
+            throw std::invalid_argument("Invalid column index");
+        for (auto &row : this->_data)
+            std::swap(row[i], row[j]);
+    }
+
+    void Matrix::AddRow(size_t to, size_t from, Variable k)
+    {
+        if (from >= this->_rows || to >= this->_rows)
+            throw std::invalid_argument("Invalid row index");
+        for (size_t i = 0; i < this->_cols; i++)
+            this->_data[to][i] += k * this->_data[from][i];
+    }
+
+    void Matrix::AddColumn(size_t from, size_t to, Variable k)
+    {
+        if (from >= this->_cols || to >= this->_cols)
+            throw std::invalid_argument("Invalid column index");
+        for (auto &row : this->_data)
+            row[to] += k * row[from];
+    }
+    void Matrix::MultiplyRow(size_t i, Variable k)
+    {
+        if (i >= this->_rows)
+            throw std::invalid_argument("Invalid row index");
+        for (auto &col : this->_data[i])
+            col *= k;
+    }
+    void Matrix::MultiplyColumn(size_t i, Variable k)
+    {
+        if (i >= this->_cols)
+            throw std::invalid_argument("Invalid column index");
+        for (auto &row : this->_data)
+            row[i] *= k;
     }
     Matrix operator*(Variable scalar, const Matrix &matrix)
     {

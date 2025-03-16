@@ -7,7 +7,6 @@
 
 namespace delfi
 {
-    // FIXME No fixed dimension matrices
     class Matrix
     {
     private:
@@ -32,9 +31,17 @@ namespace delfi
         Matrix operator*(const Matrix &other) const;
         Matrix operator*(const Variable scalar) const;
         Matrix operator/(const Variable scalar) const;
-        Matrix transpose();
-        Matrix inverse();
-        Matrix gassJordanElimination();
+        Matrix transpose() const;
+        Matrix inverse() const;
+        Matrix gassJordanElimination() const;
+        void SwapRow(size_t i, size_t j);
+        void SwapColumn(size_t i, size_t j);
+        void AddRow(size_t from, size_t to, Variable k);
+        void AddColumn(size_t to, size_t from, Variable k);
+        void MultiplyRow(size_t i, Variable k);
+        void MultiplyColumn(size_t i, Variable k);
+        Variable determinant() const;
+        Variable det() const;
     };
     Matrix operator*(Variable scalar, const Matrix &matrix);
 }

@@ -36,14 +36,12 @@ int main()
     printf("E = \n");
     printf("\t[%lf, %lf]\n", (double)E(0, 0), (double)E(0, 1));
     printf("\t[%lf, %lf]\n", (double)E(1, 0), (double)E(1, 1));
-    auto F = A;
-    F.transpose();
+    auto F = A.transpose();
     printf("F = T(A)\n");
     printf("F = \n");
     printf("\t[%lf, %lf]\n", (double)F(0, 0), (double)F(0, 1));
     printf("\t[%lf, %lf]\n", (double)F(1, 0), (double)F(1, 1));
-    auto G = A;
-    G.inverse();
+    auto G = A.inverse();
     printf("G = inv(A)\n");
     printf("G = \n");
     printf("\t[%lf, %lf]\n", (double)G(0, 0), (double)G(0, 1));
@@ -53,12 +51,13 @@ int main()
     printf("H = \n");
     printf("\t[%lf, %lf]\n", (double)H(0, 0), (double)H(0, 1));
     printf("\t[%lf, %lf]\n", (double)H(1, 0), (double)H(1, 1));
-    auto I = A;
-    I.gassJordanElimination();
+    auto I = A.gassJordanElimination();
     printf("I = gassJordanElimination(A)\n");
     printf("I = \n");
     printf("\t[%lf, %lf]\n", (double)I(0, 0), (double)I(0, 1));
     printf("\t[%lf, %lf]\n", (double)I(1, 0), (double)I(1, 1));
-
+    auto lambda = A.det();
+    printf("λ = det(A)\n");
+    printf("λ = %lf\n", (double)lambda);
     return 0;
 }
