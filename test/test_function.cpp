@@ -5,7 +5,7 @@
 #include <cmath>
 int main()
 {
-    Delfi::Function a([](Delfi::Variable x) -> Delfi::Variable
+    delfi::Function a([](delfi::Variable x) -> delfi::Variable
                       { return exp(x); });
     std::cout << a.Integral(0, 1) << std::endl;
 }

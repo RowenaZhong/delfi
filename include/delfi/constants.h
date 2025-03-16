@@ -2,7 +2,7 @@
 #ifndef DELFI_CONSTANTS_H
 #define DELFI_CONSTANTS_H
 
-namespace Delfi
+namespace delfi
 {
     typedef long double Variable; // This is the basic type in this library
 

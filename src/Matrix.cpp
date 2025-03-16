@@ -1,7 +1,7 @@
 #include "delfi/Matrix.h"
 #include <vector>
 #include <stdexcept>
-namespace Delfi
+namespace delfi
 {
     Matrix::Matrix()
     {

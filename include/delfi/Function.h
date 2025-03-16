@@ -5,7 +5,7 @@
 #include <functional>
 #include "delfi/constants.h"
 
-namespace Delfi
+namespace delfi
 {
     class Function
     {
@@ -22,6 +22,6 @@ namespace Delfi
         Variable Integral(const Variable l, const Variable r) const;
     };
 
-} // namespace Delfi
+} // namespace delfi
 
 #endif // DELFI_FUNCTION_H

@@ -5,7 +5,7 @@
 #include "constants.h"
 #include <vector>
 
-namespace Delfi
+namespace delfi
 {
     // FIXME No fixed dimension matrices
     class Matrix

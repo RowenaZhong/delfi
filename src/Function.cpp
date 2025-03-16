@@ -1,6 +1,6 @@
 #include "delfi/Function.h"
 
-namespace Delfi
+namespace delfi
 {
     Function::Function()
     {

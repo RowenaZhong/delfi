@@ -2,8 +2,8 @@
 #include <cstdio>
 int main()
 {
-    Delfi::Matrix A(2, 2);
-    Delfi::Matrix B(2, 2);
+    delfi::Matrix A(2, 2);
+    delfi::Matrix B(2, 2);
     double a, b, c, d;
     scanf("A = [%lf,%lf;%lf,%lf]\n", &a, &b, &c, &d);
     A(0, 0) = a;
