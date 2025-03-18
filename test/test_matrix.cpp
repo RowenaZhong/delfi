@@ -16,11 +16,11 @@ int main()
     B(1, 0) = c;
     B(1, 1) = d;
     printf("A = \n");
-    printf("\t[%lf, %lf]\n", (double)A(0, 0), (double)A(0, 1));
-    printf("\t[%lf, %lf]\n", (double)A(1, 0), (double)A(1, 1));
+    printf("\t%lf\t%lf\n", (double)A(0, 0), (double)A(0, 1));
+    printf("\t%lf\t%lf\n", (double)A(1, 0), (double)A(1, 1));
     printf("B = \n");
-    printf("\t[%lf, %lf]\n", (double)B(0, 0), (double)B(0, 1));
-    printf("\t[%lf, %lf]\n", (double)B(1, 0), (double)B(1, 1));
+    printf("\t%lf\t%lf\n", (double)B(0, 0), (double)B(0, 1));
+    printf("\t%lf\t%lf\n", (double)B(1, 0), (double)B(1, 1));
     auto C = A + B;
     printf("C = A + B\n");
     printf("C = \n");
@@ -56,8 +56,8 @@ int main()
     printf("I = \n");
     printf("\t[%lf, %lf]\n", (double)I(0, 0), (double)I(0, 1));
     printf("\t[%lf, %lf]\n", (double)I(1, 0), (double)I(1, 1));
-    auto lambda = A.det();
+    auto lamda = A.det();
     printf("λ = det(A)\n");
-    printf("λ = %lf\n", (double)lambda);
+    printf("λ = %lf\n", (double)lamda);
     return 0;
 }

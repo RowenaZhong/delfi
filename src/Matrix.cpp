@@ -1,6 +1,8 @@
 #include "delfi/Matrix.h"
 #include <vector>
 #include <stdexcept>
+#include <algorithm>
+
 namespace delfi
 {
     Matrix::Matrix()
@@ -44,6 +46,7 @@ namespace delfi
             throw std::out_of_range("Index out of range");
         return this->_data[row][col];
     }
+
     Variable Matrix::operator()(size_t row, size_t col) const
     {
         if (row >= this->_rows && col >= this->_cols)
@@ -152,6 +155,23 @@ namespace delfi
             for (size_t j = 0; j < this->_rows; j++)
                 ret(i, j) = temp(i, j + this->_rows);
         return Matrix(ret);
+    }
+    size_t Matrix::rank() const
+    {
+        auto temp = this->gassJordanElimination();
+        size_t r = 0;
+        for (auto &row : temp._data)
+            if (std::any_of(row.begin(), row.end(), [](const Variable &v)
+                            { return std::abs(v) > delfi::eps; }))
+                r++;
+        return r;
+    }
+    Variable Matrix::trace() const
+    {
+        Variable ans = 0;
+        for (size_t i = 0; i < this->_rows; i++)
+            ans += this->_data[i][i];
+        return ans;
     }
     Matrix Matrix::gassJordanElimination() const
     {

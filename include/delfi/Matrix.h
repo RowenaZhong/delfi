@@ -33,6 +33,8 @@ namespace delfi
         Matrix operator/(const Variable scalar) const;
         Matrix transpose() const;
         Matrix inverse() const;
+        size_t rank() const;
+        Variable trace() const;
         Matrix gassJordanElimination() const;
         void SwapRow(size_t i, size_t j);
         void SwapColumn(size_t i, size_t j);
