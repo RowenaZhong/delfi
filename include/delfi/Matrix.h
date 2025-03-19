@@ -31,6 +31,7 @@ namespace delfi
         Matrix operator*(const Matrix &other) const;
         Matrix operator*(const Variable scalar) const;
         Matrix operator/(const Variable scalar) const;
+        bool operator==(const Matrix &other) const;
         Matrix transpose() const;
         Matrix inverse() const;
         size_t rank() const;

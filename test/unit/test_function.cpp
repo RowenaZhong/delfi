@@ -6,9 +6,9 @@ TEST(FunctionTest, Addition)
 {
     delfi::Function f([](auto x) -> auto
                       { return x * x; });
-    EXPECT_EQ(f(2), 4);
-    EXPECT_EQ(f.Derivative(2), 4);
-    EXPECT_EQ(f.Integral(2, 3), 5);
+    EXPECT_NEAR(f(2), 4, 1e-6);
+    EXPECT_NEAR(f.Derivative(2), 4, 1e-6);
+    EXPECT_NEAR(f.Integral(2, 3), (double)19 / 3, 1e-6);
 }
 int main(int argc, char **argv)
 {

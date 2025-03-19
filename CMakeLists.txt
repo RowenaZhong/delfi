@@ -4,6 +4,7 @@ project(Delfi
     LANGUAGES CXX
 )
 
+
 # 设置C++标准
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
@@ -62,7 +63,17 @@ add_test(NAME test_vector
     WORKING_DIRECTORY ${CMAKE_BINARY_DIR}/test_data
 )
 
+find_package(GTest REQUIRED)
+target_link_libraries(test_vector delfi ${GTEST_LIBRARIES})
+target_link_libraries(test_matrix delfi ${GTEST_LIBRARIES})
+target_link_libraries(test_function delfi ${GTEST_LIBRARIES})
+
 # 安装测试程序（可选）
 install(TARGETS test_function test_matrix test_vector
     RUNTIME DESTINATION bin
 )
+
+if(ENABLE_COVERAGE)
+    target_compile_options(delfi PRIVATE --coverage -fprofile-arcs -ftest-coverage)
+    target_link_libraries(delfi PRIVATE --coverage)
+endif()

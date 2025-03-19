@@ -191,6 +191,14 @@ namespace delfi
         return a.cross(b);
     }
 
+    bool Vector::operator==(const Vector &other) const
+    {
+        return this->_data == other._data && this->_orientation == other._orientation;
+    }
+    bool Vector::operator!=(const Vector &other) const
+    {
+        return this->_data != other._data || this->_orientation != other._orientation;
+    }
     Variable Vector::operator[](size_t index) const
     {
         return this->_data[index];

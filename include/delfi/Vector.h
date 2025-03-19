@@ -46,6 +46,8 @@ namespace delfi
         static Variable dot(const Vector &a, const Vector &b);
         static Vector cross(const Vector &a, const Vector &b);
 
+        bool operator==(const Vector &other) const;
+        bool operator!=(const Vector &other) const;
         Variable operator[](size_t index) const;
         Variable &operator[](size_t index);
 

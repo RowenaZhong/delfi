@@ -128,6 +128,16 @@ namespace delfi
         return temp;
     }
 
+    bool Matrix::operator==(const Matrix &other) const
+    {
+        if (this->_rows != other._rows || this->_cols != other._cols)
+            return false;
+        for (size_t i = 0; i < this->_rows; i++)
+            for (size_t j = 0; j < this->_cols; j++)
+                if (this->_data[i][j] != other._data[i][j])
+                    return false;
+        return true;
+    }
     Matrix Matrix::transpose() const
     {
         Matrix temp(this->_cols, this->_rows);
