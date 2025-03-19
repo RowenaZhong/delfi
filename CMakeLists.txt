@@ -1,42 +1,68 @@
 cmake_minimum_required(VERSION 3.10)
-project(delfi VERSION 1.0.0 LANGUAGES CXX)
+project(Delfi
+    VERSION 0.1.0
+    LANGUAGES CXX
+)
 
 # 设置C++标准
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
-# 设置输出目录
-set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
-set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib)
-set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib)
+# 配置输出目录
+set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib)  # 静态库(.a)
+set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib)  # 动态库(.so/.dll)
+set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)  # 可执行文件
+
+# 创建主库
+add_library(delfi
+    src/Function.cpp
+    src/Matrix.cpp
+    src/Vector.cpp
+)
 
 # 包含头文件目录
-include_directories(include)
+target_include_directories(delfi PUBLIC
+    ${CMAKE_CURRENT_SOURCE_DIR}/include
+)
 
-# 递归收集源文件（适用于小型项目）
-file(GLOB_RECURSE SOURCES "src/*.cpp")
-
-# 构建主库
-add_library(delfi_lib STATIC ${SOURCES})
-
-# 构建测试可执行文件
-if(EXISTS ${CMAKE_CURRENT_SOURCE_DIR}/test)
-    enable_testing()
-    
-    # test_function
-    add_executable(test_function test/test_function.cpp)
-    target_link_libraries(test_function delfi_lib)
-    add_test(NAME test_function COMMAND test_function)
-    
-    # test_matrix
-    add_executable(test_matrix test/test_matrix.cpp)
-    target_link_libraries(test_matrix delfi_lib)
-    add_test(NAME test_matrix COMMAND test_matrix)
-endif()
-
-# 可选：安装规则
+# 安装配置
+install(TARGETS delfi
+    ARCHIVE DESTINATION lib
+    LIBRARY DESTINATION lib
+    RUNTIME DESTINATION bin
+)
 install(DIRECTORY include/ DESTINATION include)
-install(TARGETS delfi_lib
-        ARCHIVE DESTINATION lib
-        LIBRARY DESTINATION lib
-        RUNTIME DESTINATION bin)
+
+# 测试数据部署
+file(MAKE_DIRECTORY ${CMAKE_BINARY_DIR}/test_data)  # 创建测试数据目录
+file(COPY test/data/ DESTINATION ${CMAKE_BINARY_DIR}/test_data)  # 复制测试数据
+
+# 启用测试
+enable_testing()
+
+# 单元测试配置
+add_executable(test_function test/unit/test_function.cpp)
+target_link_libraries(test_function delfi)
+add_test(NAME test_function 
+    COMMAND test_function
+    WORKING_DIRECTORY ${CMAKE_BINARY_DIR}/test_data  # 设置测试工作目录
+)
+
+add_executable(test_matrix test/unit/test_matrix.cpp)
+target_link_libraries(test_matrix delfi)
+add_test(NAME test_matrix 
+    COMMAND test_matrix
+    WORKING_DIRECTORY ${CMAKE_BINARY_DIR}/test_data
+)
+
+add_executable(test_vector test/unit/test_vector.cpp)
+target_link_libraries(test_vector delfi)
+add_test(NAME test_vector 
+    COMMAND test_vector
+    WORKING_DIRECTORY ${CMAKE_BINARY_DIR}/test_data
+)
+
+# 安装测试程序（可选）
+install(TARGETS test_function test_matrix test_vector
+    RUNTIME DESTINATION bin
+)

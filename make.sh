@@ -1,10 +1,8 @@
 #!/bin/bash
 cd build
-cmake .. -DCMAKE_BUILD_TYPE=Release
-
-# 编译项目（观察生成路径）
-cmake --build . 
-
-# 验证输出路径
-
+cmake .. -DENABLE_COVERAGE=ON
+make
+ctest
+lcov --capture --directory . --output-file coverage.info
+genhtml coverage.info --output-directory coverage_report
 cd ..

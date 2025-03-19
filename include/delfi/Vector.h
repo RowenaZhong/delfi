@@ -43,6 +43,8 @@ namespace delfi
 
         Variable dot(const Vector &other) const;
         Vector cross(const Vector &other) const;
+        static Variable dot(const Vector &a, const Vector &b);
+        static Vector cross(const Vector &a, const Vector &b);
 
         Variable operator[](size_t index) const;
         Variable &operator[](size_t index);

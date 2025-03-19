@@ -180,6 +180,17 @@ namespace delfi
         result[2] = this->_data[0] * other[1] - this->_data[1] * other[0];
         return result;
     }
+
+    Variable Vector::dot(const Vector &a, const Vector &b)
+    {
+        return a * b;
+    }
+
+    Vector Vector::cross(const Vector &a, const Vector &b)
+    {
+        return a.cross(b);
+    }
+
     Variable Vector::operator[](size_t index) const
     {
         return this->_data[index];
