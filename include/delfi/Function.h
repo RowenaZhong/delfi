@@ -20,6 +20,7 @@ namespace delfi
         Variable operator()(const Variable x) const;
         Variable Derivative(const Variable x) const;
         Variable Integral(const Variable l, const Variable r) const;
+        Function &operator*(Function &other);
     };
 
 } // namespace delfi

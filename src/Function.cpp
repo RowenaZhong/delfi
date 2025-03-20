@@ -1,4 +1,5 @@
 #include "delfi/Function.h"
+#include "Function.h"
 
 namespace delfi
 {
@@ -45,5 +46,12 @@ namespace delfi
     Variable Function::Integral(const Variable l, const Variable r) const
     {
         return this->_part_integral(l, r);
+    }
+    Function &Function::operator*(Function &other)
+    {
+        return [this, other](const Variable x) -> Variable
+        {
+            return other(this->_func(x));
+        };
     }
 }
