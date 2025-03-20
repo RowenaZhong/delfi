@@ -1,5 +1,4 @@
 #include "delfi/MultiFunction.h"
-#include "MultiFunction.h"
 
 namespace delfi
 {

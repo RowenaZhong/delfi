@@ -17,10 +17,13 @@ namespace delfi
         Function(/* args */);
         Function(std::function<Variable(const Variable)> f);
         ~Function();
+        Function(const Function &other);
+        Function &operator=(const Function &other);
         Variable operator()(const Variable x) const;
         Variable Derivative(const Variable x) const;
         Variable Integral(const Variable l, const Variable r) const;
-        Function &operator*(Function &other);
+        Function operator*(const Function other) const;
+        Function compount(const Function other) const;
     };
 
 } // namespace delfi
