@@ -1,7 +1,7 @@
 // 示例测试代码结构
 #include <gtest/gtest.h>
 #include "delfi/Function.h"
-
+#include <string>
 TEST(BasicCalcTest, Addition)
 {
     delfi::Function f([](auto x) -> auto
@@ -29,13 +29,22 @@ TEST(CompoundTest, Addition)
                       { return x * x; });
     delfi::Function g([](auto x) -> auto
                       { return x + 1; });
-    auto h = f * g; // h(x) = g(f(x))
-    auto i = g * f; // i(x) = f(g(x))
-    auto j = g * g * g;
-    EXPECT_NEAR(h(2), 5, 1e-6);
-    EXPECT_NEAR(i(2), 9, 1e-6);
-    EXPECT_NEAR(j(2), 5, 1e-6); // FIXME : SEGFAULT
+    delfi::Function h([](auto x) -> auto
+                      { return x / 2; });
+    auto a = f * g * h;
+    auto b = g * f * h;
+    auto c = f * h * g;
+    auto d = h * f * g;
+    auto e = h * g * f;
+    auto i = g * h * f;
+    EXPECT_NEAR(a(2), 2.5, 1e-6);
+    EXPECT_NEAR(b(2), 4.5, 1e-6);
+    EXPECT_NEAR(c(2), 3, 1e-6);
+    EXPECT_NEAR(d(2), 2, 1e-6);
+    EXPECT_NEAR(e(2), 4, 1e-6);
+    EXPECT_NEAR(i(2), 2.25, 1e-6);
 }
+
 int main(int argc, char **argv)
 {
     printf("Running main() from %s\n", __FILE__);
