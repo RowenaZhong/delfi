@@ -18,11 +18,14 @@ namespace delfi
         MultiFunction(/* args */);
         MultiFunction(std::function<Variable(const Vector)> f);
         ~MultiFunction();
+        // operator=
+        const MultiFunction &operator=(const MultiFunction &mf);
+        const MultiFunction &operator=(const std::function<Variable(const Vector)> &mf);
         Variable operator()(const Vector x) const;
         Variable PartialDerivative(const Vector x, const size_t idx) const;
         Variable Integral(Vector begin, const size_t idx, const Variable to) const;
     };
-    Function &operator*(const MultiFunction &mf, const Function &f);
+    MultiFunction operator*(const MultiFunction mf, const Function f);
 } // namespace delfi
 
 #endif // DELFI_MULTI_FUNCTION_H

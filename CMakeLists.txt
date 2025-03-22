@@ -19,6 +19,7 @@ add_library(delfi
     src/Function.cpp
     src/Matrix.cpp
     src/Vector.cpp
+    src/MultiFunction.cpp
 )
 
 # 包含头文件目录
@@ -63,15 +64,25 @@ add_test(NAME test_vector
     WORKING_DIRECTORY ${CMAKE_BINARY_DIR}/test_data
 )
 
+add_executable(test_multifunction test/unit/test_multifunction.cpp)
+target_link_libraries(test_multifunction delfi)
+add_test(NAME test_multifunction 
+    COMMAND test_multifunction
+    WORKING_DIRECTORY ${CMAKE_BINARY_DIR}/test_data
+)
+
+
 find_package(GTest REQUIRED)
 target_link_libraries(test_vector delfi ${GTEST_LIBRARIES})
 target_link_libraries(test_matrix delfi ${GTEST_LIBRARIES})
 target_link_libraries(test_function delfi ${GTEST_LIBRARIES})
+target_link_libraries(test_multifunction delfi ${GTEST_LIBRARIES})
 
 # 安装测试程序（可选）
-install(TARGETS test_function test_matrix test_vector
+install(TARGETS test_function test_matrix test_vector test_multifunction
     RUNTIME DESTINATION bin
 )
+
 
 if(ENABLE_COVERAGE)
     target_compile_options(delfi PRIVATE --coverage -fprofile-arcs -ftest-coverage)
