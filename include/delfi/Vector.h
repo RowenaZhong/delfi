@@ -55,6 +55,7 @@ namespace delfi
         Orientation orientation() const;
         void resize(size_t size, Orientation orientation = Orientation::ROW);
         void clear();
+        void push_back(Variable value);
 
         void setOrientation(Orientation orientation);
         Vector toRow() const;

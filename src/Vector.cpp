@@ -225,6 +225,10 @@ namespace delfi
     {
         this->_data.clear();
     }
+    void Vector::push_back(Variable value)
+    {
+        this->_data.push_back(value);
+    }
     void Vector::setOrientation(Orientation orientation)
     {
         this->_orientation = orientation;
