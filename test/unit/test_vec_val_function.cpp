@@ -4,7 +4,9 @@
 #include <string>
 TEST(VecValFunctionTest, TestVecValFunction)
 {
+    // TODO All kinds of test cases
 }
+
 int main(int argc, char **argv)
 {
     printf("Running main() from %s\n", __FILE__);

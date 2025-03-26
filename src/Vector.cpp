@@ -164,6 +164,25 @@ namespace delfi
         return result;
     }
 
+    Vector Vector::operator*(const Variable &other) const
+    {
+        Vector result(this->size(), this->_orientation);
+        for (size_t i = 0; i < this->size(); i++)
+        {
+            result[i] = this->_data[i] * other;
+        }
+        return result;
+    }
+
+    Vector Vector::operator/(const Variable &other) const
+    {
+        Vector result(this->size(), this->_orientation);
+        for (size_t i = 0; i < this->size(); i++)
+        {
+            result[i] = this->_data[i] / other;
+        }
+        return result;
+    }
     Variable Vector::dot(const Vector &other) const
     {
         return *this * other;
@@ -267,5 +286,9 @@ namespace delfi
             break;
         }
         return ret;
+    }
+    Vector operator*(const Variable &lhs, const Vector &rhs)
+    {
+        return rhs * lhs;
     }
 }

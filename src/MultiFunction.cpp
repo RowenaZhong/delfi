@@ -13,6 +13,7 @@ namespace delfi
         this->_func = func;
         this->_dim = dim;
     }
+
     MultiFunction::~MultiFunction()
     {
     }
@@ -21,14 +22,14 @@ namespace delfi
     {
         return size_t(this->_dim);
     }
-    void MultiFunction::_Check_Dim(const Vector x) const
+    void MultiFunction::_CheckArgDim(const Vector x) const
     {
         if (x.size() != this->_dim)
             throw std::invalid_argument("Dimension of input vector does not match the dimension of the function");
     }
     Variable MultiFunction::operator()(const Vector x) const
     {
-        this->_Check_Dim(x);
+        this->_CheckArgDim(x);
         return this->_func(x);
     }
     const MultiFunction &MultiFunction::operator=(const MultiFunction &mf)
@@ -39,7 +40,7 @@ namespace delfi
     }
     Variable MultiFunction::PartialDerivative(const Vector x, const size_t idx) const
     {
-        this->_Check_Dim(x);
+        this->_CheckArgDim(x);
         Variable c_eps = eps;
         auto calc_d = [this, x, idx](Variable c_eps) -> Variable
         {
@@ -55,7 +56,7 @@ namespace delfi
     }
     Vector MultiFunction::Gradient(const Vector x) const
     {
-        this->_Check_Dim(x);
+        this->_CheckArgDim(x);
         Vector grad;
         for (size_t i = 0; i < x.size(); i++)
             grad.push_back(this->PartialDerivative(x, i));
@@ -63,7 +64,7 @@ namespace delfi
     }
     Variable MultiFunction::Integral(Vector begin, const size_t idx, const Variable to) const
     {
-        this->_Check_Dim(begin);
+        this->_CheckArgDim(begin);
         Function _part_function([this, begin, idx](Variable x) -> Variable
                                 {
             Vector X = begin;

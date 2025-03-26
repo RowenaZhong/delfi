@@ -30,14 +30,14 @@ namespace delfi
 
     Variable Function::Derivative(const Variable x) const
     {
-        Variable c_eps = eps;
-        auto calc_d = [this, x](Variable c_eps) -> Variable
+        Variable dx = eps;
+        auto calc_d = [this, x](Variable dx) -> Variable
         {
-            return (this->_func(x + c_eps) - this->_func(x - c_eps)) / (2 * c_eps);
+            return (this->_func(x + dx) - this->_func(x - dx)) / (2 * dx);
         };
-        while (abs(calc_d(c_eps) - calc_d(c_eps / 2)) > eps)
-            c_eps /= 2;
-        return calc_d(c_eps);
+        while (abs(calc_d(dx) - calc_d(dx / 2)) > eps)
+            dx /= 2;
+        return calc_d(dx);
     }
     Variable Function::_part_integral(const Variable l, const Variable r) const
     {

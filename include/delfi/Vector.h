@@ -40,6 +40,8 @@ namespace delfi
         Vector operator+(const Vector &other) const;
         Vector operator-(const Vector &other) const;
         Variable operator*(const Vector &other) const;
+        Vector operator*(const Variable &other) const;
+        Vector operator/(const Variable &other) const;
 
         Variable dot(const Vector &other) const;
         Vector cross(const Vector &other) const;
@@ -63,6 +65,7 @@ namespace delfi
         Vector transpose() const;
         Matrix toMatrix() const;
     };
+    Vector operator*(const Variable &a, const Vector &b);
 }
 
 #endif // DELFI_VECTOR_H

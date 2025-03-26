@@ -14,11 +14,12 @@ namespace delfi
     private:
         std::function<Variable(const Vector)> _func;
         size_t _dim;
-        void _Check_Dim(const Vector x) const;
+        void _CheckArgDim(const Vector x) const;
 
     public:
         MultiFunction(/* args */);
         MultiFunction(std::function<Variable(const Vector)> f, size_t dim);
+        MultiFunction(const MultiFunction &mf) : _func(mf._func), _dim(mf._dim) {};
         ~MultiFunction();
         const size_t GetDim() const;
         // operator=
