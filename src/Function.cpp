@@ -55,14 +55,4 @@ namespace delfi
     {
         return this->_part_integral(l, r);
     }
-    Function Function::operator*(const Function other) const
-    {
-        return Function([f1 = this->_func, f2 = other._func](const Variable x) -> Variable
-                        { return f2(f1(x)); });
-    }
-    Function Function::compount(const Function other) const
-    {
-        return Function([this, other](const Variable x) -> Variable
-                        { return this->_func(other(x)); });
-    }
 }

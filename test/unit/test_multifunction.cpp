@@ -27,17 +27,17 @@ TEST(MultiFunctionTest, Integral)
     auto integral = mf.Integral(x, 0, 3.0);
     EXPECT_NEAR(integral, 7.5, 1e-6);
 }
-TEST(MultiFunctionTest, Compount)
-{
-    delfi::MultiFunction mf([](delfi::Vector x) -> delfi::Variable
-                            { return x[0] * x[1]; }, 2);
-    delfi::Function f([](delfi::Variable x) -> delfi::Variable
-                      { return x + 5; });
-    delfi::Vector x = (std::vector<double>){2.0, 3.0};
-    auto g = mf * f;
-    auto y = g(x);
-    EXPECT_NEAR(y, 11.0, 1e-6);
-}
+// TEST(MultiFunctionTest, Compount)
+// {
+//     delfi::MultiFunction mf([](delfi::Vector x) -> delfi::Variable
+//                             { return x[0] * x[1]; }, 2);
+//     delfi::Function f([](delfi::Variable x) -> delfi::Variable
+//                       { return x + 5; });
+//     delfi::Vector x = (std::vector<double>){2.0, 3.0};
+//     auto g = mf * f;
+//     auto y = g(x);
+//     EXPECT_NEAR(y, 11.0, 1e-6);
+// }
 TEST(MultiFunctionTest, Gradient)
 {
     delfi::MultiFunction mf([](delfi::Vector x) -> delfi::Variable

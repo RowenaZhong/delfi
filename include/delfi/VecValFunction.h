@@ -5,7 +5,6 @@
 #include <functional>
 namespace delfi
 {
-
     class VecValFunction
     {
     private:
@@ -17,6 +16,7 @@ namespace delfi
         inline VecValFunction() {};
         VecValFunction(const std::function<Vector(const Variable)> &func, const size_t dim) : _func(func), _dim(dim) {}
         VecValFunction(const VecValFunction &other) : _func(other._func), _dim(other._dim) {}
+        VecValFunction(const std::vector<Function> &funcs);
         const VecValFunction &operator=(const VecValFunction &other);
         const VecValFunction &operator=(const std::vector<Function> &funcs);
         Vector operator()(const Variable x) const;

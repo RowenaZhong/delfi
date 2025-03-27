@@ -30,7 +30,6 @@ namespace delfi
         Vector Gradient(const Vector x) const;
         Variable Integral(Vector begin, const size_t idx, const Variable to) const;
     };
-    MultiFunction operator*(const MultiFunction mf, const Function f);
 } // namespace delfi
 
 #endif // DELFI_MULTI_FUNCTION_H

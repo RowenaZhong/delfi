@@ -73,10 +73,4 @@ namespace delfi
         return _part_function.Integral(begin[idx], to);
     }
 
-    MultiFunction operator*(const MultiFunction mf, const Function f)
-    {
-        return MultiFunction([mf, f](const Vector x) -> Variable
-                             { return f(mf(x)); }, mf.GetDim());
-    }
-
 }
