@@ -15,15 +15,15 @@ namespace delfi
 
     public:
         Field() = default;
-        Field(std::function<Vector(const Vector)> &func, const size_t d1, const size_t d2);
-        Field(std::vector<MultiFunction> &mfs);
+        Field(const std::function<Vector(const Vector)> &func, const size_t d1, const size_t d2);
+        Field(const std::vector<MultiFunction> &mfs);
         Field(const Field &other);
         const Field &operator=(const Field &other);
         const Field &operator=(std::vector<MultiFunction> &mfs);
         Vector operator()(const Vector &x) const;
         size_t getDim1() const;
         size_t getDim2() const;
-    }
+    };
 } // namespace delfi {
 
 #endif // DELFI_FIELD_H

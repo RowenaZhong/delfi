@@ -21,6 +21,7 @@ add_library(delfi
     src/Vector.cpp
     src/MultiFunction.cpp
     src/VecValFunction.cpp
+    src/Field.cpp
 )
 
 # 包含头文件目录
@@ -79,15 +80,24 @@ add_test(NAME test_vec_val_function
     WORKING_DIRECTORY ${CMAKE_BINARY_DIR}/test_data
 )
 
+add_executable(test_field test/unit/test_field.cpp)
+target_link_libraries(test_field delfi)
+add_test(NAME test_field
+    COMMAND test_field
+    WORKING_DIRECTORY ${CMAKE_BINARY_DIR}/test_data
+)
+
 find_package(GTest REQUIRED)
 target_link_libraries(test_vector delfi ${GTEST_LIBRARIES})
 target_link_libraries(test_matrix delfi ${GTEST_LIBRARIES})
 target_link_libraries(test_function delfi ${GTEST_LIBRARIES})
 target_link_libraries(test_multifunction delfi ${GTEST_LIBRARIES})
 target_link_libraries(test_vec_val_function delfi ${GTEST_LIBRARIES})
+target_link_libraries(test_field delfi ${GTEST_LIBRARIES})
+
 
 # 安装测试程序（可选）
-install(TARGETS test_function test_matrix test_vector test_multifunction test_vec_val_function
+install(TARGETS test_function test_matrix test_vector test_multifunction test_vec_val_function test_field
     RUNTIME DESTINATION bin
 )
 

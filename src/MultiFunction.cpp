@@ -8,7 +8,7 @@ namespace delfi
     {
     }
 
-    MultiFunction::MultiFunction(std::function<Variable(const Vector)> func, size_t dim)
+    MultiFunction::MultiFunction(std::function<Variable(const Vector)> func, const size_t dim)
     {
         this->_func = func;
         this->_dim = dim;

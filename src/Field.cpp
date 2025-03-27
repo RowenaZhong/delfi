@@ -1,8 +1,8 @@
-#include "Field.h"
-
+#include "delfi/Field.h"
+#include <stdexcept>
 namespace delfi
 {
-    Field::Field(std::function<Vector(const Vector)> &func, const size_t d1, const size_t d2)
+    Field::Field(const std::function<Vector(const Vector)> &func, const size_t d1, const size_t d2)
     {
         if (d1 == 0 || d2 == 0)
         {
@@ -13,7 +13,7 @@ namespace delfi
         this->_dim2 = d2;
     }
 
-    Field::Field(std::vector<MultiFunction> &mfs)
+    Field::Field(const std::vector<MultiFunction> &mfs)
     {
         if (mfs.size() == 0)
         {
@@ -26,7 +26,7 @@ namespace delfi
                 result.push_back(mf(x));
             return result;
         };
-        this->_dim1 = mfs[0].getDim();
+        this->_dim1 = mfs[0].GetDim();
         this->_dim2 = mfs.size();
     }
     Field::Field(const Field &other)
@@ -55,7 +55,7 @@ namespace delfi
                 result.push_back(mf(x));
             return result;
         };
-        this->_dim1 = mfs[0].getDim();
+        this->_dim1 = mfs[0].GetDim();
         this->_dim2 = mfs.size();
         return *this;
     }

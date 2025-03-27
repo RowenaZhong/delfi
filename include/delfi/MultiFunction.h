@@ -18,7 +18,7 @@ namespace delfi
 
     public:
         MultiFunction(/* args */);
-        MultiFunction(std::function<Variable(const Vector)> f, size_t dim);
+        MultiFunction(std::function<Variable(const Vector)> f, const size_t dim);
         MultiFunction(const MultiFunction &mf) : _func(mf._func), _dim(mf._dim) {};
         ~MultiFunction();
         const size_t GetDim() const;
