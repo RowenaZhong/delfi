@@ -23,6 +23,8 @@ namespace delfi
         Vector operator()(const Vector &x) const;
         size_t getDim1() const;
         size_t getDim2() const;
+        Variable Derivative(const Vector x, const size_t i, const size_t j); // 偏导数 partial derivative
+        Variable Divergence(const Vector x);                                 // 散度 divergence
     };
 } // namespace delfi {
 

@@ -71,4 +71,21 @@ namespace delfi
     {
         return size_t(this->_dim2);
     }
+    Variable Field::Derivative(const Vector P, const size_t i, const size_t j)
+    {
+        auto temp = Function([this, P, i, j](const Variable x) -> Variable
+                             {
+            Vector t = P;
+            t[i] = x;
+            return this->_func(t)[j]; });
+        return temp.Derivative(P[i]);
+    }
+    Variable Field::Divergence(const Vector x)
+    {
+        Variable result = 0;
+        for (size_t i = 0; i < this->_dim1; i++)
+            result += Derivative(x, i, i);
+        return result;
+    }
+
 } // namespace delfi

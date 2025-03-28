@@ -16,7 +16,7 @@ TEST(MultiFunctionTest, Derivative)
     delfi::MultiFunction mf([](delfi::Vector x) -> delfi::Variable
                             { return x[0] * x[1]; }, 2);
     delfi::Vector x = (std::vector<double>){2.0, 3.0};
-    auto frac_df_dx = mf.PartialDerivative(x, 0);
+    auto frac_df_dx = mf.Derivative(x, 0);
     EXPECT_NEAR(frac_df_dx, 3.0, 1e-6);
 }
 TEST(MultiFunctionTest, Integral)

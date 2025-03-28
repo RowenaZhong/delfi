@@ -26,7 +26,7 @@ namespace delfi
         const MultiFunction &operator=(const MultiFunction &mf);
 
         Variable operator()(const Vector x) const;
-        Variable PartialDerivative(const Vector x, const size_t idx) const;
+        Variable Derivative(const Vector x, const size_t idx) const;
         Vector Gradient(const Vector x) const;
         Variable Integral(Vector begin, const size_t idx, const Variable to) const;
     };

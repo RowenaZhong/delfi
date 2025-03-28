@@ -38,7 +38,7 @@ namespace delfi
         this->_dim = mf._dim;
         return *this;
     }
-    Variable MultiFunction::PartialDerivative(const Vector x, const size_t idx) const
+    Variable MultiFunction::Derivative(const Vector x, const size_t idx) const
     {
         this->_CheckArgDim(x);
         Variable c_eps = eps;
@@ -59,7 +59,7 @@ namespace delfi
         this->_CheckArgDim(x);
         Vector grad;
         for (size_t i = 0; i < x.size(); i++)
-            grad.push_back(this->PartialDerivative(x, i));
+            grad.push_back(this->Derivative(x, i));
         return grad;
     }
     Variable MultiFunction::Integral(Vector begin, const size_t idx, const Variable to) const
