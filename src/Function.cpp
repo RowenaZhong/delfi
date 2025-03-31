@@ -8,24 +8,24 @@ namespace delfi
 
     Function::Function(std::function<Variable(const Variable)> func)
     {
-        this->_func = func;
+        this->_sfunc.func = func;
     }
     Function::~Function()
     {
     }
     Function::Function(const Function &other)
     {
-        this->_func = other._func;
+        this->_sfunc = other._sfunc;
     }
     Function &Function::operator=(const Function &other)
     {
-        this->_func = other._func;
+        this->_sfunc = other._sfunc;
         return *this;
     }
 
     Variable Function::operator()(const Variable x) const
     {
-        return this->_func(x);
+        return this->_sfunc(x);
     }
 
     Variable Function::Derivative(const Variable x) const
@@ -33,7 +33,7 @@ namespace delfi
         Variable dx = eps;
         auto calc_d = [this, x](Variable dx) -> Variable
         {
-            return (this->_func(x + dx) - this->_func(x - dx)) / (2 * dx);
+            return (this->_sfunc(x + dx) - this->_sfunc(x - dx)) / (2 * dx);
         };
         while (abs(calc_d(dx) - calc_d(dx / 2)) > eps)
             dx /= 2;
@@ -43,7 +43,7 @@ namespace delfi
     {
         auto calc_approximate_integral = [this](const Variable l, const Variable r) -> Variable
         {
-            return (this->_func(l) + 4 * this->_func((l + r) / 2) + this->_func(r)) * (r - l) / 6;
+            return (this->_sfunc(l) + 4 * this->_sfunc((l + r) / 2) + this->_sfunc(r)) * (r - l) / 6;
         };
         auto mid = (l + r) / 2;
         auto ans = calc_approximate_integral(l, r);

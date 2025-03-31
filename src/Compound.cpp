@@ -4,50 +4,50 @@ namespace delfi
 {
     Function operator*(const Function &f1, const Function &f2)
     {
-        return Function([=, f1, f2](const Variable x) -> Variable
-                        { return f2(f1(x)); });
+        return Function([f = f1, g = f2](const Variable x) -> Variable
+                        { return g(f(x)); });
     }
     Function operator*(const VecValFunction &f1, const MultiFunction &f2)
     {
         if (f1.GetDim() != f2.GetDim())
-            throw std::invalid_argument("Dimension mismatch");
-        return Function([=, f1, f2](const Variable x) -> Variable
-                        { return f2(f1(x)); });
+            throw std::invalid_argument("Dimension mismatch"); // TODO rewrite
+        return Function([f = f1, g = f2](const Variable x) -> Variable
+                        { return g(f(x)); });
     }
     MultiFunction operator*(const MultiFunction &f1, const Function &f2)
     {
-        return MultiFunction([=, f1, f2](const Vector x) -> Variable
-                             { return f2(f1(x)); }, f1.GetDim());
+        return MultiFunction([f = f1, g = f2](const Vector x) -> Variable
+                             { return g(f(x)); }, f1.GetDim());
     }
     MultiFunction operator*(const Field &f1, const MultiFunction &f2)
     {
         if (f1.getDim2() != f2.GetDim())
-            throw std::invalid_argument("Dimension mismatch");
-        return MultiFunction([=, f1, f2](const Vector x) -> Variable
-                             { return f2(f1(x)); }, f1.getDim1());
+            throw std::invalid_argument("Dimension mismatch"); // TODO rewrite
+        return MultiFunction([f = f1, g = f2](const Vector x) -> Variable
+                             { return g(f(x)); }, f1.getDim1());
     }
     VecValFunction operator*(const VecValFunction &f1, const Field &f2)
     {
         if (f1.GetDim() != f2.getDim1())
-            throw std::invalid_argument("Dimension mismatch");
-        return VecValFunction([=, f1, f2](const Variable x) -> Vector
-                              { return f2(f1(x)); }, f2.getDim2());
+            throw std::invalid_argument("Dimension mismatch"); // TODO rewrite
+        return VecValFunction([f = f1, g = f2](const Variable x) -> Vector
+                              { return g(f(x)); }, f2.getDim2());
     }
     VecValFunction operator*(const Function &f1, const VecValFunction &f2)
     {
-        return VecValFunction([=, f1, f2](const Variable x) -> Vector
-                              { return f2(f1(x)); }, f2.GetDim());
+        return VecValFunction([f = f1, g = f2](const Variable x) -> Vector
+                              { return g(f(x)); }, f2.GetDim());
     }
     Field operator*(const Field &f1, const Field &f2)
     {
         if (f1.getDim2() != f2.getDim1())
-            throw std::invalid_argument("Dimension mismatch");
-        return Field([=, f1, f2](const Vector x) -> Vector
-                     { return f2(f1(x)); }, f1.getDim1(), f2.getDim2());
+            throw std::invalid_argument("Dimension mismatch"); // TODO rewrite
+        return Field([f = f1, g = f2](const Vector x) -> Vector
+                     { return g(f(x)); }, f1.getDim1(), f2.getDim2());
     }
     Field operator*(const MultiFunction &f1, const VecValFunction &f2)
     {
-        return Field([=, f1, f2](const Vector x) -> Vector
-                     { return f2(f1(x)); }, f1.GetDim(), f2.GetDim());
+        return Field([f = f1, g = f2](const Vector x) -> Vector
+                     { return g(f(x)); }, f1.GetDim(), f2.GetDim());
     }
 }

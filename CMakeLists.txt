@@ -22,6 +22,7 @@ add_library(delfi
     src/MultiFunction.cpp
     src/VecValFunction.cpp
     src/Field.cpp
+    src/Compound.cpp
 )
 
 # 包含头文件目录

@@ -10,8 +10,53 @@ namespace delfi
     class Field
     {
     private:
-        std::function<Vector(const Vector)> _func;
-        size_t _dim1, _dim2;
+        class _SafeProvider
+        {
+        public:
+            std::function<Vector(const Vector)>
+                func;
+            size_t ArgLen;
+            size_t RetLen;
+
+        private:
+            inline void CheckArgs(const Variable x) const {};
+            inline void CheckRet(const Variable x) const {};
+            inline void CheckArgs(const Vector x) const
+            {
+                if (x.size() != this->ArgLen)
+                    throw "wrong number of arguments"; // TODO rewrite
+            }
+            inline void CheckRet(const Vector x) const
+            {
+                if (x.size() != this->RetLen)
+                    throw "wrong number of return values"; // TODO rewrite
+            }
+            inline void CheckFunction() const
+            {
+                if (this->func == nullptr)
+                    throw "function do not exist"; // TODO rewrite
+            }
+            inline void CheckArgs(const size_t idx) const
+            {
+                if (idx >= this->ArgLen)
+                    throw "wrong number of arguments"; // TODO rewrite
+            }
+            inline void CheckRet(const size_t idx) const
+            {
+                if (idx >= this->RetLen)
+                    throw "wrong number of return values"; // TODO rewrite
+            }
+
+        public:
+            inline Vector operator()(const Vector x) const
+            {
+                this->CheckFunction();
+                this->CheckArgs(x);
+                auto result = this->func(x);
+                this->CheckRet(result);
+                return this->func(x);
+            }
+        } _sfunc;
 
     public:
         Field() = default;

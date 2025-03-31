@@ -4,72 +4,62 @@ namespace delfi
 {
     Field::Field(const std::function<Vector(const Vector)> &func, const size_t d1, const size_t d2)
     {
-        if (d1 == 0 || d2 == 0)
-        {
-            throw std::invalid_argument("Field dimensions must be greater than 0");
-        }
-        this->_func = func;
-        this->_dim1 = d1;
-        this->_dim2 = d2;
+        this->_sfunc.func = func;
+        this->_sfunc.ArgLen = d1;
+        this->_sfunc.RetLen = d2;
     }
 
     Field::Field(const std::vector<MultiFunction> &mfs)
     {
-        if (mfs.size() == 0)
-        {
-            throw std::invalid_argument("Field must contain at least one function");
-        }
-        this->_func = [mfs](const Vector x) -> Vector
+        for (const auto &mf : mfs)
+            if (mf.GetDim() != mfs[0].GetDim())
+                throw std::invalid_argument("All functions must have the same dimension"); // TODO rewrite
+        this->_sfunc.func = [mfs](const Vector x) -> Vector
         {
             Vector result;
             for (auto &mf : mfs)
                 result.push_back(mf(x));
             return result;
         };
-        this->_dim1 = mfs[0].GetDim();
-        this->_dim2 = mfs.size();
+        this->_sfunc.ArgLen = mfs[0].GetDim();
+        this->_sfunc.RetLen = mfs.size();
     }
     Field::Field(const Field &other)
     {
-        this->_func = other._func;
-        this->_dim1 = other._dim1;
-        this->_dim2 = other._dim2;
+        this->_sfunc = other._sfunc;
     }
     const Field &Field::operator=(const Field &other)
     {
-        this->_func = other._func;
-        this->_dim1 = other._dim1;
-        this->_dim2 = other._dim2;
+        this->_sfunc = other._sfunc;
         return *this;
     }
     const Field &Field::operator=(std::vector<MultiFunction> &mfs)
     {
-        if (mfs.size() == 0)
-        {
-            throw std::invalid_argument("Field must contain at least one function");
-        }
-        this->_func = [mfs](const Vector x) -> Vector
+        for (const auto &mf : mfs)
+            if (mf.GetDim() != mfs[0].GetDim())
+                throw std::invalid_argument("All functions must have the same dimension"); // TODO rewrite
+        this->_sfunc.func = [mfs](const Vector x) -> Vector
         {
             Vector result;
             for (auto &mf : mfs)
                 result.push_back(mf(x));
             return result;
         };
-        this->_dim1 = mfs[0].GetDim();
-        this->_dim2 = mfs.size();
+        this->_sfunc.ArgLen = mfs[0].GetDim();
+        this->_sfunc.RetLen = mfs.size();
         return *this;
     }
     Vector Field::operator()(const Vector &x) const
     {
-        return this->_func(x);
+        return this->_sfunc(x);
     }
     size_t Field::getDim1() const
     {
-        return size_t(this->_dim1);
+        return this->_sfunc.ArgLen;
     }
     size_t Field::getDim2() const
     {
-        return size_t(this->_dim2);
+        return size_t(this->_sfunc.RetLen);
     }
     Variable Field::Derivative(const Vector P, const size_t i, const size_t j)
     {
@@ -77,13 +67,15 @@ namespace delfi
                              {
             Vector t = P;
             t[i] = x;
-            return this->_func(t)[j]; });
+            return this->_sfunc(t)[j]; });
         return temp.Derivative(P[i]);
     }
     Variable Field::Divergence(const Vector x)
     {
+        if (this->_sfunc.ArgLen != this->_sfunc.RetLen)
+            throw std::invalid_argument("Divergence is only defined for vector fields"); // TODO rewrite
         Variable result = 0;
-        for (size_t i = 0; i < this->_dim1; i++)
+        for (size_t i = 0; i < this->_sfunc.ArgLen; i++)
             result += Derivative(x, i, i);
         return result;
     }
