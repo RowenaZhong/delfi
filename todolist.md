@@ -1,8 +1,8 @@
-- Integral and Derivative for Vector Field
-- Function Compound
-- standardizate the four function class
-  - check points for function definition
-  - check points for standard function call inside the class function call
+- [X] Integral and Derivative for Vector Field
+- [X] Function Compound
+- [X] standardizate the four function class
+  - [X] check points for function definition
+  - [X] check points for standard function call inside the class function call
     ```cpp
         void _funcall(A x)
         {
@@ -13,4 +13,5 @@
             return result;
         }
     ```
-- code for poly solver
+- [ ] CalculateErrorReporter
+- [ ] code for poly solver
