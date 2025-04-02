@@ -37,7 +37,7 @@ namespace delfi
     {
         for (const auto &mf : mfs)
             if (mf.GetDim() != mfs[0].GetDim())
-                mfs[0].GetDim() throw delfi::InvalidArgumentReporter(mf.GetDim(), mfs[0].GetDim());
+                throw delfi::InvalidArgumentReporter(mf.GetDim(), mfs[0].GetDim());
         this->_sfunc.func = [mfs](const Vector x) -> Vector
         {
             Vector result;

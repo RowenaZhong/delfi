@@ -22,14 +22,14 @@ namespace delfi
     MultiFunction operator*(const Field &f1, const MultiFunction &f2)
     {
         if (f1.getDim2() != f2.GetDim())
-            throw delfi::InvalidArgumentReporter(f1.GetDim(), f2.GetDim());
+            throw delfi::InvalidArgumentReporter(f1.getDim2(), f2.GetDim());
         return MultiFunction([f = f1, g = f2](const Vector x) -> Variable
                              { return g(f(x)); }, f1.getDim1());
     }
     VecValFunction operator*(const VecValFunction &f1, const Field &f2)
     {
         if (f1.GetDim() != f2.getDim1())
-            throw delfi::InvalidArgumentReporter(f1.GetDim(), f2.GetDim());
+            throw delfi::InvalidArgumentReporter(f1.GetDim(), f2.getDim1());
         return VecValFunction([f = f1, g = f2](const Variable x) -> Vector
                               { return g(f(x)); }, f2.getDim2());
     }
@@ -41,7 +41,7 @@ namespace delfi
     Field operator*(const Field &f1, const Field &f2)
     {
         if (f1.getDim2() != f2.getDim1())
-            throw delfi::InvalidArgumentReporter(f1.GetDim(), f2.GetDim());
+            throw delfi::InvalidArgumentReporter(f1.getDim2(), f2.getDim1());
         return Field([f = f1, g = f2](const Vector x) -> Vector
                      { return g(f(x)); }, f1.getDim1(), f2.getDim2());
     }

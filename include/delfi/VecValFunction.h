@@ -16,7 +16,6 @@ namespace delfi
             size_t ArgLen;
             size_t RetLen;
 
-        private:
             inline void CheckArgs(const Variable x) const {};
             inline void CheckRet(const Variable x) const {};
             inline void CheckArgs(const Vector x) const
@@ -37,19 +36,14 @@ namespace delfi
             inline void CheckArgs(const size_t idx) const
             {
                 if (idx >= this->ArgLen)
-                    throw delfi::InvalidArgumentReporter(this->ArgLen, x.size());
-            }
-            inline void CheckRet(const size_t idx) const
-            {
-                if (idx >= this->RetLen)
-                    throw delfi::InvalidArgumentReporter(this->RetLen, x.size());
+                    throw delfi::InvalidArgumentReporter(this->ArgLen, idx);
             }
 
         public:
             inline void CheckRet(const size_t idx) const
             {
                 if (idx >= this->RetLen)
-                    throw delfi::InvalidArgumentReporter(this->RetLen, x.size());
+                    throw delfi::InvalidArgumentReporter(this->RetLen, idx);
             }
             inline Vector operator()(const Variable x) const
             {

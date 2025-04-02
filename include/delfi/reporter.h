@@ -20,7 +20,7 @@ namespace delfi
         FunctionUndefinedReporter() : std::runtime_error("Undefined function reported") {}
 
         FunctionUndefinedReporter(const std::string name) : std::runtime_error("Undefined function reported in function " + name) {}
-    }
+    };
 } // namespace delfi
 
 #endif // DELFI_REPORTER_H

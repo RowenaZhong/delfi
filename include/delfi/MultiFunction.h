@@ -20,7 +20,6 @@ namespace delfi
             size_t ArgLen;
             size_t RetLen;
 
-        private:
             inline void CheckArgs(const Variable x) const {};
             inline void CheckRet(const Variable x) const {};
             inline void CheckRet(const Vector x) const
@@ -31,7 +30,7 @@ namespace delfi
             inline void CheckRet(const size_t idx) const
             {
                 if (idx >= this->RetLen)
-                    throw delfi::InvalidArgumentReporter(this->RetLen, x.size());
+                    throw delfi::InvalidArgumentReporter(this->RetLen, idx);
             }
 
             inline void CheckArgs(const Vector x) const
@@ -44,14 +43,11 @@ namespace delfi
                 if (this->func == nullptr)
                     throw delfi::FunctionUndefinedReporter();
             }
-
-        public:
             inline void CheckArgs(const size_t idx) const
             {
                 if (idx >= this->ArgLen)
-                    throw delfi::InvalidArgumentReporter(this->ArgLen, x.size());
+                    throw delfi::InvalidArgumentReporter(this->ArgLen, idx);
             }
-
             inline Variable operator()(const Vector x) const
             {
                 this->CheckFunction();

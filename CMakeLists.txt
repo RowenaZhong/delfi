@@ -107,3 +107,12 @@ if(ENABLE_COVERAGE)
     target_compile_options(delfi PRIVATE --coverage -fprofile-arcs -ftest-coverage)
     target_link_libraries(delfi PRIVATE --coverage)
 endif()
+
+# 自动发现所有示例文件
+file(GLOB EXAMPLE_SOURCES "example/*.cpp")
+
+foreach(example_source ${EXAMPLE_SOURCES})
+    get_filename_component(example_name ${example_source} NAME_WE)
+    add_executable(${example_name} ${example_source})
+    target_link_libraries(${example_name} delfi)
+endforeach()

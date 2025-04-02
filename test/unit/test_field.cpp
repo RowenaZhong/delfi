@@ -23,7 +23,7 @@ delfi::VecValFunction get_f()
     auto f = delfi::VecValFunction();
     {
         auto route = delfi::VecValFunction([](const delfi::Variable x) -> delfi::Vector
-                                           { return (std::vector<delfi::Variable>){cos(x)}; }, 2);
+                                           { return (std::vector<delfi::Variable>){cos(x), sin(x)}; }, 2);
         auto gravity2 = delfi::Field([](const delfi::Vector P) -> delfi::Vector
                                      { return (std::vector<delfi::Variable>){-P[0] / pow(P[0] * P[0] + P[1] * P[1], 3 / 2), -P[1] / pow(P[0] * P[0] + P[1] * P[1], 3 / 2)}; }, 2, 2);
         f = route * gravity2;

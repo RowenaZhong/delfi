@@ -257,7 +257,7 @@ namespace delfi
     void Matrix::AddRow(size_t to, size_t from, Variable k)
     {
         if (from >= this->_rows || to >= this->_rows)
-            throw delfi::InvalidArgumentReportert("Invalid row index");
+            throw delfi::InvalidArgumentReporter("Invalid row index");
         for (size_t i = 0; i < this->_cols; i++)
             this->_data[to][i] += k * this->_data[from][i];
     }
