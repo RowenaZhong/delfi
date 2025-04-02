@@ -1,5 +1,5 @@
 #include "delfi/Compound.h"
-#include <stdexcept>
+#include "delfi/reporter.h"
 namespace delfi
 {
     Function operator*(const Function &f1, const Function &f2)
@@ -10,7 +10,7 @@ namespace delfi
     Function operator*(const VecValFunction &f1, const MultiFunction &f2)
     {
         if (f1.GetDim() != f2.GetDim())
-            throw std::invalid_argument("Dimension mismatch"); // TODO rewrite
+            throw delfi::InvalidArgumentReporter(f1.GetDim(), f2.GetDim());
         return Function([f = f1, g = f2](const Variable x) -> Variable
                         { return g(f(x)); });
     }
@@ -22,14 +22,14 @@ namespace delfi
     MultiFunction operator*(const Field &f1, const MultiFunction &f2)
     {
         if (f1.getDim2() != f2.GetDim())
-            throw std::invalid_argument("Dimension mismatch"); // TODO rewrite
+            throw delfi::InvalidArgumentReporter(f1.GetDim(), f2.GetDim());
         return MultiFunction([f = f1, g = f2](const Vector x) -> Variable
                              { return g(f(x)); }, f1.getDim1());
     }
     VecValFunction operator*(const VecValFunction &f1, const Field &f2)
     {
         if (f1.GetDim() != f2.getDim1())
-            throw std::invalid_argument("Dimension mismatch"); // TODO rewrite
+            throw delfi::InvalidArgumentReporter(f1.GetDim(), f2.GetDim());
         return VecValFunction([f = f1, g = f2](const Variable x) -> Vector
                               { return g(f(x)); }, f2.getDim2());
     }
@@ -41,7 +41,7 @@ namespace delfi
     Field operator*(const Field &f1, const Field &f2)
     {
         if (f1.getDim2() != f2.getDim1())
-            throw std::invalid_argument("Dimension mismatch"); // TODO rewrite
+            throw delfi::InvalidArgumentReporter(f1.GetDim(), f2.GetDim());
         return Field([f = f1, g = f2](const Vector x) -> Vector
                      { return g(f(x)); }, f1.getDim1(), f2.getDim2());
     }

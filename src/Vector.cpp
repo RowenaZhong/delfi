@@ -1,5 +1,5 @@
 #include "delfi/Vector.h"
-#include <stdexcept>
+#include "delfi/reporter.h"
 namespace delfi
 {
     Vector::Vector()
@@ -37,7 +37,7 @@ namespace delfi
         }
         else
         {
-            throw std::invalid_argument("Matrix must be a row or column vector");
+            throw delfi::InvalidArgumentReporter("Matrix must be a row or column vector");
         }
     }
 
@@ -82,7 +82,7 @@ namespace delfi
         }
         else
         {
-            throw std::invalid_argument("Matrix must be a row or column vector");
+            throw delfi::InvalidArgumentReporter("Matrix must be a row or column vector");
         }
         return *this;
     }
@@ -103,7 +103,7 @@ namespace delfi
     {
         if (this->size() != other.size())
         {
-            throw std::invalid_argument("Vectors must be of the same size");
+            throw delfi::InvalidArgumentReporter("Vectors must be of the same size");
         }
         for (size_t i = 0; i < this->size(); i++)
         {
@@ -115,7 +115,7 @@ namespace delfi
     {
         if (this->size() != other.size())
         {
-            throw std::invalid_argument("Vectors must be of the same size");
+            throw delfi::InvalidArgumentReporter("Vectors must be of the same size");
         }
         for (size_t i = 0; i < this->size(); i++)
         {
@@ -128,7 +128,7 @@ namespace delfi
     {
         if (this->size() != other.size())
         {
-            throw std::invalid_argument("Vectors must be of the same size");
+            throw delfi::InvalidArgumentReporter("Vectors must be of the same size");
         }
         Vector result(this->size(), this->_orientation);
         for (size_t i = 0; i < this->size(); i++)
@@ -141,7 +141,7 @@ namespace delfi
     {
         if (this->size() != other.size())
         {
-            throw std::invalid_argument("Vectors must be of the same size");
+            throw delfi::InvalidArgumentReporter("Vectors must be of the same size");
         }
         Vector result(this->size(), this->_orientation);
         for (size_t i = 0; i < this->size(); i++)
@@ -154,7 +154,7 @@ namespace delfi
     {
         if (this->size() != other.size())
         {
-            throw std::invalid_argument("Vectors must be of the same size");
+            throw delfi::InvalidArgumentReporter("Vectors must be of the same size");
         }
         Variable result = 0;
         for (size_t i = 0; i < this->size(); i++)
@@ -191,7 +191,7 @@ namespace delfi
     {
         if (this->size() != 3 || other.size() != 3)
         {
-            throw std::invalid_argument("Vectors must be of size 3");
+            throw delfi::InvalidArgumentReporter("Vectors must be of size 3");
         }
         Vector result(3, this->_orientation);
         result[0] = this->_data[1] * other[2] - this->_data[2] * other[1];
@@ -282,7 +282,7 @@ namespace delfi
                 ret(i, 0) = this->_data[i];
             break;
         default:
-            throw std::invalid_argument("Invalid orientation");
+            throw delfi::InvalidArgumentReporter("Invalid orientation");
             break;
         }
         return ret;

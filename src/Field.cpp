@@ -1,5 +1,5 @@
 #include "delfi/Field.h"
-#include <stdexcept>
+#include "delfi/reporter.h"
 namespace delfi
 {
     Field::Field(const std::function<Vector(const Vector)> &func, const size_t d1, const size_t d2)
@@ -13,7 +13,7 @@ namespace delfi
     {
         for (const auto &mf : mfs)
             if (mf.GetDim() != mfs[0].GetDim())
-                throw std::invalid_argument("All functions must have the same dimension"); // TODO rewrite
+                throw delfi::InvalidArgumentReporter(mf.GetDim(), mfs[0].GetDim());
         this->_sfunc.func = [mfs](const Vector x) -> Vector
         {
             Vector result;
@@ -37,7 +37,7 @@ namespace delfi
     {
         for (const auto &mf : mfs)
             if (mf.GetDim() != mfs[0].GetDim())
-                throw std::invalid_argument("All functions must have the same dimension"); // TODO rewrite
+                mfs[0].GetDim() throw delfi::InvalidArgumentReporter(mf.GetDim(), mfs[0].GetDim());
         this->_sfunc.func = [mfs](const Vector x) -> Vector
         {
             Vector result;
@@ -73,7 +73,7 @@ namespace delfi
     Variable Field::Divergence(const Vector x)
     {
         if (this->_sfunc.ArgLen != this->_sfunc.RetLen)
-            throw std::invalid_argument("Divergence is only defined for vector fields"); // TODO rewrite
+            throw delfi::FunctionUndefinedReporter("Divergence for non-square field");
         Variable result = 0;
         for (size_t i = 0; i < this->_sfunc.ArgLen; i++)
             result += Derivative(x, i, i);

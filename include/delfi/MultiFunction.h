@@ -23,33 +23,35 @@ namespace delfi
         private:
             inline void CheckArgs(const Variable x) const {};
             inline void CheckRet(const Variable x) const {};
-
-        public:
-            inline void CheckArgs(const Vector x) const
-            {
-                if (x.size() != this->ArgLen)
-                    throw "wrong number of arguments"; // TODO rewrite
-            }
             inline void CheckRet(const Vector x) const
             {
                 if (x.size() != this->RetLen)
-                    throw "wrong number of return values"; // TODO rewrite
-            }
-            inline void CheckFunction() const
-            {
-                if (this->func == nullptr)
-                    throw "function do not exist"; // TODO rewrite
-            }
-            inline void CheckArgs(const size_t idx) const
-            {
-                if (idx >= this->ArgLen)
-                    throw "wrong number of arguments"; // TODO rewrite
+                    throw delfi::InvalidArgumentReporter("in return value, expected for " + std::to_string(this->ArgLen) + ", but " + std::to_string(x.size()));
             }
             inline void CheckRet(const size_t idx) const
             {
                 if (idx >= this->RetLen)
-                    throw "wrong number of return values"; // TODO rewrite
+                    throw delfi::InvalidArgumentReporter(this->RetLen, x.size());
             }
+
+            inline void CheckArgs(const Vector x) const
+            {
+                if (x.size() != this->ArgLen)
+                    throw delfi::InvalidArgumentReporter(this->ArgLen, x.size());
+            }
+            inline void CheckFunction() const
+            {
+                if (this->func == nullptr)
+                    throw delfi::FunctionUndefinedReporter();
+            }
+
+        public:
+            inline void CheckArgs(const size_t idx) const
+            {
+                if (idx >= this->ArgLen)
+                    throw delfi::InvalidArgumentReporter(this->ArgLen, x.size());
+            }
+
             inline Variable operator()(const Vector x) const
             {
                 this->CheckFunction();

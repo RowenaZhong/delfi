@@ -1,6 +1,6 @@
 #include "delfi/Matrix.h"
+#include "delfi/reporter.h"
 #include <vector>
-#include <stdexcept>
 #include <algorithm>
 
 namespace delfi
@@ -43,14 +43,14 @@ namespace delfi
     Variable &Matrix::operator()(size_t row, size_t col)
     {
         if (row >= this->_rows && col >= this->_cols)
-            throw std::out_of_range("Index out of range");
+            throw delfi::InvalidArgumentReporter("Index out of range");
         return this->_data[row][col];
     }
 
     Variable Matrix::operator()(size_t row, size_t col) const
     {
         if (row >= this->_rows && col >= this->_cols)
-            throw std::out_of_range("Index out of range");
+            throw delfi::InvalidArgumentReporter("Index out of range");
         return this->_data[row][col];
     }
     Matrix &Matrix::operator=(const Matrix &other)
@@ -63,7 +63,7 @@ namespace delfi
     Matrix &Matrix::operator+=(const Matrix &other)
     {
         if (this->_rows != other._rows || this->_cols != other._cols)
-            throw std::invalid_argument("Matrix dimensions do not match");
+            throw delfi::InvalidArgumentReporter("Matrix dimensions do not match");
         for (size_t i = 0; i < this->_rows; i++)
             for (size_t j = 0; j < this->_cols; j++)
                 this->_data[i][j] += other._data[i][j];
@@ -72,7 +72,7 @@ namespace delfi
     Matrix &Matrix::operator-=(const Matrix &other)
     {
         if (this->_rows != other._rows || this->_cols != other._cols)
-            throw std::invalid_argument("Matrix dimensions do not match");
+            throw delfi::InvalidArgumentReporter("Matrix dimensions do not match");
         for (size_t i = 0; i < this->_rows; i++)
             for (size_t j = 0; j < this->_cols; j++)
                 this->_data[i][j] -= other._data[i][j];
@@ -81,7 +81,7 @@ namespace delfi
     Matrix &Matrix::operator*=(const Matrix &other)
     {
         if (this->_cols != other._rows)
-            throw std::invalid_argument("Matrix dimensions do not match");
+            throw delfi::InvalidArgumentReporter("Matrix dimensions do not match");
         Matrix temp(*this);
         this->resize(this->_rows, other._cols);
         for (auto &row : this->_data)
@@ -149,9 +149,9 @@ namespace delfi
     Matrix Matrix::inverse() const
     {
         if (this->_rows != this->_cols)
-            throw std::invalid_argument("Matrix is not square");
+            throw delfi::InvalidArgumentReporter("Matrix must be square to have an inverse");
         if (this->determinant() == 0)
-            throw std::invalid_argument("Matrix is not invertible");
+            throw delfi::InvalidArgumentReporter("Matrix is not invertible");
         Matrix temp(this->_rows, this->_rows * 2);
         for (size_t i = 0; i < this->_rows; i++)
             for (size_t j = 0; j < this->_rows; j++)
@@ -186,7 +186,7 @@ namespace delfi
     Matrix Matrix::gassJordanElimination() const
     {
         if (this->_rows > this->_cols)
-            throw std::invalid_argument("Gass Jordan elimination is only possible for square matrices or matrices with more rows than columns");
+            throw delfi::InvalidArgumentReporter("Gass Jordan elimination is only possible for square matrices or matrices with more rows than columns");
         Matrix temp(*this);
         size_t r = 0, c = 0;
         while (r < temp._rows && c < temp._cols)
@@ -213,7 +213,7 @@ namespace delfi
     Variable Matrix::determinant() const
     {
         if (this->_rows != this->_cols)
-            throw std::invalid_argument("Matrix is not square");
+            throw delfi::InvalidArgumentReporter("Matrix must be square to have an determinant");
         Matrix temp(*this);
         size_t r = 0, c = 0;
         Variable ans = 1;
@@ -243,13 +243,13 @@ namespace delfi
     void Matrix::SwapRow(size_t i, size_t j)
     {
         if (i >= this->_rows || j >= this->_rows)
-            throw std::invalid_argument("Invalid row index");
+            throw delfi::InvalidArgumentReporter("Invalid row index");
         std::swap(this->_data[i], this->_data[j]);
     }
     void Matrix::SwapColumn(size_t i, size_t j)
     {
         if (i >= this->_cols || j >= this->_cols)
-            throw std::invalid_argument("Invalid column index");
+            throw delfi::InvalidArgumentReporter("Invalid column index");
         for (auto &row : this->_data)
             std::swap(row[i], row[j]);
     }
@@ -257,7 +257,7 @@ namespace delfi
     void Matrix::AddRow(size_t to, size_t from, Variable k)
     {
         if (from >= this->_rows || to >= this->_rows)
-            throw std::invalid_argument("Invalid row index");
+            throw delfi::InvalidArgumentReportert("Invalid row index");
         for (size_t i = 0; i < this->_cols; i++)
             this->_data[to][i] += k * this->_data[from][i];
     }
@@ -265,21 +265,21 @@ namespace delfi
     void Matrix::AddColumn(size_t from, size_t to, Variable k)
     {
         if (from >= this->_cols || to >= this->_cols)
-            throw std::invalid_argument("Invalid column index");
+            throw delfi::InvalidArgumentReporter("Invalid column index");
         for (auto &row : this->_data)
             row[to] += k * row[from];
     }
     void Matrix::MultiplyRow(size_t i, Variable k)
     {
         if (i >= this->_rows)
-            throw std::invalid_argument("Invalid row index");
+            throw delfi::InvalidArgumentReporter("Invalid row index");
         for (auto &col : this->_data[i])
             col *= k;
     }
     void Matrix::MultiplyColumn(size_t i, Variable k)
     {
         if (i >= this->_cols)
-            throw std::invalid_argument("Invalid column index");
+            throw delfi::InvalidArgumentReporter("Invalid column index");
         for (auto &row : this->_data)
             row[i] *= k;
     }
